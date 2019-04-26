@@ -5,6 +5,17 @@ import Header from './Header';
 import './MoviePage.css';
 
 class MoviePage extends Component {
+
+    state = {
+        image: '',
+        title: '',
+        date: '',
+        desc: ''
+    }
+
+    componentDidMount() {
+
+    }
     
     render() {
         return(

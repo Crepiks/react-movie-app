@@ -4,6 +4,8 @@ import './Home.css';
 
 import Header from './Header';
 import MovieCard from './MovieCard';
+import Pagination from './Pagination';
+import { isUndefined } from 'util';
 
 class Home extends Component {
 
@@ -14,11 +16,15 @@ class Home extends Component {
 
     state = {
         currentPage: 1,
+        searchQuery: '',
         moviesList : []
     }
 
     _onSearchQueryChange = (searchQuery) => {
-        this.setMoviesList(this.state.currentPage, searchQuery);
+        this.setState({
+            ...this.state,
+            searchQuery: searchQuery
+        });
     }
 
     getConfig = () => {
@@ -36,11 +42,14 @@ class Home extends Component {
         });
     }
 
-    setMoviesList = (page, searchQuery) => {
-        if (searchQuery !== '') {
-            var url = ''.concat(this.baseURL, 'search/movie?api_key=', this.API_KEY, '&query=', searchQuery);
+    setMoviesList = () => {
+        var url;
+        if (!isUndefined(this.props.match.params.query) && !isUndefined(this.props.match.params.page)) {
+            url = ''.concat(this.baseURL, 'search/movie?api_key=', this.API_KEY, '&query=', this.props.match.params.query, '&page=', this.props.match.params.page);
+        } else if (!isUndefined(this.props.match.params.query)) {
+            url = ''.concat(this.baseURL, 'search/movie?api_key=', this.API_KEY, '&query=', this.props.match.params.query);
         } else {
-            var url = ''.concat(this.baseURL, 'movie/popular?api_key=', this.API_KEY);
+            url = ''.concat(this.baseURL, 'movie/popular?api_key=', this.API_KEY, '&page=', this.state.currentPage);
         }
         fetch(url)
         .then(result=>result.json())
@@ -66,7 +75,7 @@ class Home extends Component {
 
     componentDidMount() {
         this.getConfig();
-        this.setMoviesList(this.state.currentPage, '');
+        this.setMoviesList();
     }
 
     render() {
@@ -76,6 +85,8 @@ class Home extends Component {
                 <div className="home__movies-container">
                     {this.getMoviesList()}
                 </div>
+
+                <Pagination currentPage={this.props.match.params.page} query={this.props.match.params.query} />
             </div>
         );
     }

@@ -12,7 +12,7 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/:page?/:query?" component={Home} />
         <Route path="/movie/:id" component={MoviePage} />
       </Switch>
     </Router>
