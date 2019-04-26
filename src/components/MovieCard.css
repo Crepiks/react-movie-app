@@ -1,0 +1,38 @@
+.movie-card {
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.movie-card__heading {
+    margin: 10px 0;
+    font-size: 25px;
+    font-weight: 400;
+}
+
+.movie-card__description {
+    width: 80%;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.movie-card__link {
+    margin: 10px 0;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    transition: 500ms;
+    background-color:#4cb272;
+}
+
+.movie-card__link:hover {
+    color: #ccc;
+    background-color: #1e1e1e;
+    transition: 500ms;
+}
