@@ -16,3 +16,10 @@
     border: 1px solid #ccc;
     background-color: #1a1a1a;
 }
+
+.header__link {
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    background-color: #4cb272;
+}

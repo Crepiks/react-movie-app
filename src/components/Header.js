@@ -5,14 +5,18 @@ import './Header.css';
 
 class Header extends Component {
 
+    _onUserInput = (e) => {
+        this.props._onSearchQueryChange(e.target.value);
+    }
+
     render() {
         return(
             <header className="header">
                 <h1 className="header__logo">Movie App</h1>
                 {this.props.rootPage ? <form>
-                    <input type="text" />
+                    <input type="text" onChange={this._onUserInput} />
                 </form> : null}
-                {this.props.rootPage ? null : <Link to="/">Home</Link>}
+                {this.props.rootPage ? null : <Link to="/" className="header__link">Home</Link>}
             </header>
         );
     }

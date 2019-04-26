@@ -6,15 +6,25 @@ import './MovieCard.css';
 class MovieCard extends Component {
 
     render() {
+        let { title, release_date, poster, id } = this.props.movie;
         return(
             <div className="movie-card">
-                <img src="https://image.tmdb.org/t/p/w200/kqjL17yufvn9OVLyXYpvtyrFfak.jpg" alt="mad max" />
-                <h3 className="movie-card__heading">Mad Max</h3>
-                <time className="movie-card__date">2019-03-02</time>
-                <p className="movie-card__description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                <Link to="/" className="movie-card__link">More</Link>
+                <img src={poster} alt={this.props.movie.title} />
+                <h3 className="movie-card__heading">{title}</h3>
+                <time className="movie-card__date">{release_date}</time>
+                <Link to={"/movie/" + id} className="movie-card__link">More</Link>
             </div>
         );
+    }
+}
+
+MovieCard.defaultProps = {
+    movie: {
+        id: null,
+        image: null,
+        title: null,
+        date: null,
+        description: null
     }
 }
 
