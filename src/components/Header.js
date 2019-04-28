@@ -33,7 +33,7 @@ class Header extends Component {
             <header className="header">
                 <h1 className="header__logo">Movie App</h1>
                 {this.props.rootPage ? <form onSubmit={this._onUserSubmit}>
-                    <input type="text" name="search" value={this.state.searchQuery} onChange={this._onUserInput} autoComplete="off" />
+                    <input type="search" name="search" value={this.state.searchQuery} onChange={this._onUserInput} autoComplete="off" />
                 </form> : null}
                 {this.props.rootPage ? null : <Link to="/" className="header__link">Home</Link>}
             </header>
