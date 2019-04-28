@@ -5,6 +5,7 @@ import './Home.css';
 import Header from './Header';
 import MovieCard from './MovieCard';
 import Pagination from './Pagination';
+import Error from './Error';
 import { isUndefined } from 'util';
 
 class Home extends Component {
@@ -18,7 +19,8 @@ class Home extends Component {
         currentPage: 1,
         lastPage: 1,
         searchQuery: '',
-        moviesList : []
+        moviesList : [],
+        noConnection: false,
     }
 
     // Return current page number according on routing 
@@ -69,9 +71,17 @@ class Home extends Component {
                 moviesList: data.results,
                 searchQuery: query, 
                 currentPage: page, 
-                lastPage: data.total_pages
+                lastPage: data.total_pages,
+                noConnection: false
+            });
+        }).catch((error) => {
+            this.setState({
+                ...this.state, 
+                noConnection: true, 
+                lastPage: 1
             });
         })
+        
     }
 
     // Render movies by list stored in state
@@ -84,7 +94,7 @@ class Home extends Component {
             });
         } else {
             // if there is no items in the list return message
-            return <h3>Not found</h3>
+            return <Error text="Not found" />;
         }
     }
 
@@ -97,6 +107,7 @@ class Home extends Component {
     componentDidUpdate() {
         // Reload movie list if page has been changed
         if (this.state.currentPage !== this.getCurrentPage()) {
+            window.scrollTo(0, 0);
             this.setMoviesList(this.state.searchQuery, this.getCurrentPage());
         }
     }
@@ -105,9 +116,12 @@ class Home extends Component {
         return(
             <div className="home">
                 <Header rootPage={this.state.currentPage === 1 ? true : false} searchQuery={this.state.searchQuery} _onSearchQueryChange={this._onSearchQueryChange} />
-                <div className="home__movies-container">
-                    {this.getMoviesList()}
-                </div>
+                { this.state.noConnection ?
+                    <Error text="No connection" /> :
+                    <div className="home__movies-container">
+                        {this.getMoviesList()}
+                    </div>
+                }
                 <Pagination currentPage={this.getCurrentPage()} lastPage={this.state.lastPage} />
             </div>
         );

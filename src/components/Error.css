@@ -1,0 +1,9 @@
+.error {
+    width: 100%;
+}
+
+.error__heading {
+    margin-top: 30vh;
+    font-weight: 400;
+    text-align: center;
+}

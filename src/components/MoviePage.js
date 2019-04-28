@@ -100,6 +100,10 @@ class MoviePage extends Component {
         window.localStorage.setItem('starredMovies', movieList);
     }
 
+    goBack = () => {
+        window.history.back();
+    }
+
     componentWillUnmount() {
         let starredMoviesList = this.getStarredMoviesList();
         if (!starredMoviesList.includes(this.state.id) && this.state.starred) {
@@ -123,6 +127,7 @@ class MoviePage extends Component {
                     {this.getStarredIcon()}
                 </div>
                 <p className="movie-page__paragraph">{this.state.desc}</p>
+                <i className="fas fa-arrow-left movie-page__icon" onClick={this.goBack}></i>
             </div>
         );
     }

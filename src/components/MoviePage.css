@@ -23,6 +23,28 @@
 }
 
 .movie-page__paragraph {
-    margin: 0 auto 100px;
+    margin: 0 auto 50px;
     width: 80%;
+    text-align: center;
+}
+
+@media all and (min-width: 1000px) {
+    .movie-page__row {
+        width: 30%;
+    }
+}
+
+.movie-page__icon {
+    margin-bottom: 50px;
+    color: #ccc;
+    font-size: 30px;
+    transition: 500ms;
+    text-decoration: none;
+
+}
+
+.movie-page__icon:hover {
+    color: black;
+    transition: 500ms;
+    cursor: pointer;
 }
