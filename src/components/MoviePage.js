@@ -36,8 +36,7 @@ class MoviePage extends Component {
         });
     }
 
-    // Set state according to query and page
-    // Search query and page are stored too to be available when page update
+    // Make request and store data in the state
     setMovieInfo = (id) => {
         var url;
         url = ''.concat(this.baseURL, 'movie/' + id + '?api_key=', this.API_KEY);
@@ -63,6 +62,7 @@ class MoviePage extends Component {
         });
     }
 
+    // Changing state when user star or distar movie
     getStarredIcon = () => {
         if (this.state.starred) {
             return <i className="fas fa-star movie-page__star" onClick={this.toggleStarred}></i>;
@@ -71,8 +71,8 @@ class MoviePage extends Component {
         }
     }
 
+    // Setting starred state when initializing
     setStarredState = (id) => {
-        console.log(this.getStarredMoviesList(), id);
         if (this.getStarredMoviesList().includes(id)) {
             this.setState({
                 ...this.state,
@@ -81,6 +81,7 @@ class MoviePage extends Component {
         }
     }
 
+    // Returns starred movies list from localStorage
     getStarredMoviesList = () => {
         if (window.localStorage.getItem('starredMovies') === null) {
             return [];
@@ -90,7 +91,6 @@ class MoviePage extends Component {
     }
 
     componentDidMount() {
-        console.log('Ids list: ' + this.getStarredMoviesList());
         this.getConfig();
         this.setMovieInfo(this.props.match.params.id);
     }
@@ -104,6 +104,7 @@ class MoviePage extends Component {
         window.history.back();
     }
 
+    // When user leave the page => store appropriate data in localStorage
     componentWillUnmount() {
         let starredMoviesList = this.getStarredMoviesList();
         if (!starredMoviesList.includes(this.state.id) && this.state.starred) {
