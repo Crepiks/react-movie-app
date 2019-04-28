@@ -13,9 +13,12 @@
     justify-content: space-around;
 }
 
-.movie-page__icon {
+.movie-page__star {
     font-size: 25px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .movie-page__title {

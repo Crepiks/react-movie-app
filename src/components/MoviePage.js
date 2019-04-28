@@ -65,9 +65,9 @@ class MoviePage extends Component {
 
     getStarredIcon = () => {
         if (this.state.starred) {
-            return <i className="fas fa-star movie-page__icon" onClick={this.toggleStarred}></i>;
+            return <i className="fas fa-star movie-page__star" onClick={this.toggleStarred}></i>;
         } else {
-            return <i className="far fa-star movie-page__icon" onClick={this.toggleStarred}></i>;
+            return <i className="far fa-star movie-page__star" onClick={this.toggleStarred}></i>;
         }
     }
 
