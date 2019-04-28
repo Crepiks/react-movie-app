@@ -11,6 +11,8 @@
     color: #ccc;
     font-size: 30px;
     transition: 500ms;
+    text-decoration: none;
+
 }
 
 .pagination__icon:hover {

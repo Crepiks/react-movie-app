@@ -14,7 +14,7 @@ class Header extends Component {
             <header className="header">
                 <h1 className="header__logo">Movie App</h1>
                 {this.props.rootPage ? <form>
-                    <input type="text" onChange={this._onUserInput} />
+                    <input type="text" onChange={this._onUserInput} value={this.props.searchQuery} />
                 </form> : null}
                 {this.props.rootPage ? null : <Link to="/" className="header__link">Home</Link>}
             </header>

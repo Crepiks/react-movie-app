@@ -1,22 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 
 import Home from './components/Home';
 import MoviePage from './components/MoviePage';
 
-function App() {
+class App extends Component {
 
 
-
-  return (
-    <Router>
-      <Switch>
-        <Route exact path="/:page?/:query?" component={Home} />
-        <Route path="/movie/:id" component={MoviePage} />
-      </Switch>
-    </Router>
-  );
+  render() {
+    return (
+      <Router>
+        <Switch>
+          <Route exact path="/:page?" component={Home} />
+          <Route path="/movie/:id" component={MoviePage} />
+        </Switch>
+      </Router>
+    );
+  }
 }
 
 export default App;

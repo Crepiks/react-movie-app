@@ -2,38 +2,30 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 
 import './Pagination.css';
-import { isUndefined } from 'util';
 
 class Pagination extends Component {
 
     getPreviousPagePath = () => {
-        let result = '/' + (+this.props.currentPage - 1);
-        if (!isUndefined(this.props.query)) {
-            result = result + '/' + this.props.query;
-        }
-        return result;
+        return '/' + (this.props.currentPage - 1);
     }
 
     getNextPagePath = () => {
-        let result;
-        if (!isUndefined(this.props.currentPage)) {
-            result = '/' + (+this.props.currentPage + 1);
+        return '/' + (this.props.currentPage + 1);
+    }
+
+    isItLastPage = () => {
+        if (this.props.currentPage === this.props.lastPage) {
+            return true;
         } else {
-            result = '/2';
+            return false;
         }
-
-        if (!isUndefined(this.props.query)) {
-            result = result + '/' + this.props.query;
-        } 
-
-        return result;
     }
 
     render() {
         return(
             <div className="pagination">
-                { !isUndefined(this.props.currentPage) && +this.props.currentPage !== 1 ? <Link to={this.getPreviousPagePath()} className="fas fa-arrow-left pagination__icon"></Link> : null}
-                <Link to={this.getNextPagePath()} className="fas fa-arrow-right pagination__icon"></Link>
+                { this.props.currentPage !== 1 ? <Link to={this.getPreviousPagePath()} className="fas fa-arrow-left pagination__icon"></Link> : null }
+                { this.isItLastPage() ? null : <Link to={this.getNextPagePath()} className="fas fa-arrow-right pagination__icon"></Link> }
             </div>
         );
     }

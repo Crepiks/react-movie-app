@@ -12,21 +12,31 @@ class Home extends Component {
     API_KEY = 'bd42635e62d60657f430cccaf1a52512';
     baseURL = 'https://api.themoviedb.org/3/';
     configData = null;
-    baseImageURL = null;
+    baseImageURL = 'https://image.tmdb.org/t/p/';
 
     state = {
         currentPage: 1,
+        lastPage: 1,
         searchQuery: '',
         moviesList : []
     }
 
-    _onSearchQueryChange = (searchQuery) => {
-        this.setState({
-            ...this.state,
-            searchQuery: searchQuery
-        });
+    // Return current page number according on routing 
+    getCurrentPage = () => {
+        if(isUndefined(this.props.match.params.page)) {
+            return 1;
+        } else {
+            return +this.props.match.params.page
+        }
     }
 
+    // When user input query => update movie list
+    _onSearchQueryChange = (searchQuery) => {
+        this.setMoviesList(searchQuery, 1);
+        
+    }
+
+    // Get configuration data from API
     getConfig = () => {
         let url = "".concat(this.baseURL, 'configuration?api_key=', this.API_KEY); 
         fetch(url)
@@ -42,25 +52,29 @@ class Home extends Component {
         });
     }
 
-    setMoviesList = () => {
+    // Set state according to query and page
+    // Search query and page are stored too to be available when page update
+    setMoviesList = (query, page) => {
         var url;
-        if (!isUndefined(this.props.match.params.query) && !isUndefined(this.props.match.params.page)) {
-            url = ''.concat(this.baseURL, 'search/movie?api_key=', this.API_KEY, '&query=', this.props.match.params.query, '&page=', this.props.match.params.page);
-        } else if (!isUndefined(this.props.match.params.query)) {
-            url = ''.concat(this.baseURL, 'search/movie?api_key=', this.API_KEY, '&query=', this.props.match.params.query);
+        if (query === '') {
+            url = ''.concat(this.baseURL, 'movie/popular?api_key=', this.API_KEY, '&page=', page);
         } else {
-            url = ''.concat(this.baseURL, 'movie/popular?api_key=', this.API_KEY, '&page=', this.state.currentPage);
+            url = ''.concat(this.baseURL, 'search/movie?api_key=', this.API_KEY, '&query=', query, '&page=', page);
         }
         fetch(url)
         .then(result=>result.json())
         .then((data)=>{
             this.setState({
                 ...this.state,
-                moviesList: data.results
+                moviesList: data.results,
+                searchQuery: query, 
+                currentPage: page, 
+                lastPage: data.total_pages
             });
         })
     }
 
+    // Render movies by list stored in state
     getMoviesList = () => {
         let moviesList = this.state.moviesList;
         if (moviesList.length > 0) {
@@ -69,24 +83,32 @@ class Home extends Component {
                 return <MovieCard movie={movie} key={movie.id} />
             });
         } else {
+            // if there is no items in the list return message
             return <h3>Not found</h3>
         }
     }
 
+    // Set configuration and initial movie list
     componentDidMount() {
         this.getConfig();
-        this.setMoviesList();
+        this.setMoviesList(this.state.searchQuery, this.getCurrentPage());
+    }
+
+    componentDidUpdate() {
+        // Reload movie list if page has been changed
+        if (this.state.currentPage !== this.getCurrentPage()) {
+            this.setMoviesList(this.state.searchQuery, this.getCurrentPage());
+        }
     }
 
     render() {
         return(
             <div className="home">
-                <Header rootPage={true} searchQuery={this.state.searchQuery} _onSearchQueryChange={this._onSearchQueryChange} />
+                <Header rootPage={this.state.currentPage === 1 ? true : false} searchQuery={this.state.searchQuery} _onSearchQueryChange={this._onSearchQueryChange} />
                 <div className="home__movies-container">
                     {this.getMoviesList()}
                 </div>
-
-                <Pagination currentPage={this.props.match.params.page} query={this.props.match.params.query} />
+                <Pagination currentPage={this.getCurrentPage()} lastPage={this.state.lastPage} />
             </div>
         );
     }
