@@ -38,13 +38,13 @@ class MoviePage extends Component {
 
     // Set state according to query and page
     // Search query and page are stored too to be available when page update
-    setMoviesList = (id) => {
+    setMovieInfo = (id) => {
         var url;
         url = ''.concat(this.baseURL, 'movie/' + id + '?api_key=', this.API_KEY);
         fetch(url)
         .then(result=>result.json())
         .then((data)=>{
-            console.log(data);
+            this.setStarredState(data.id);
             this.setState({
                 ...this.state,
                 id: data.id,
@@ -71,28 +71,46 @@ class MoviePage extends Component {
         }
     }
 
+    setStarredState = (id) => {
+        console.log(this.getStarredMoviesList(), id);
+        if (this.getStarredMoviesList().includes(id)) {
+            this.setState({
+                ...this.state,
+                starred: true
+            });
+        }
+    }
+
     getStarredMoviesList = () => {
         if (window.localStorage.getItem('starredMovies') === null) {
             return [];
         } else {
-            return window.localStorage.getItem('starredMovies');
+            return JSON.parse(window.localStorage.getItem('starredMovies'));
         }
     }
 
     componentDidMount() {
-        console.log(this.getStarredMoviesList());
+        console.log('Ids list: ' + this.getStarredMoviesList());
         this.getConfig();
-        this.setMoviesList(this.props.match.params.id);
+        this.setMovieInfo(this.props.match.params.id);
+    }
+
+    storeMovieList = (movieList) => {
+        movieList = JSON.stringify(movieList);
+        window.localStorage.setItem('starredMovies', movieList);
     }
 
     componentWillUnmount() {
         let starredMoviesList = this.getStarredMoviesList();
         if (!starredMoviesList.includes(this.state.id) && this.state.starred) {
-            console.log("Starred movies list: " + starredMoviesList);
             starredMoviesList.push(this.state.id);
-            window.localStorage.setItem('starredMovies', starredMoviesList);
+            this.storeMovieList(starredMoviesList);
+        } else if (starredMoviesList.includes(this.state.id) && !this.state.starred) {
+            starredMoviesList.splice(starredMoviesList.indexOf(this.state.id), 1);
+            this.storeMovieList(starredMoviesList);
         }
     }
+    
     
     render() {
         return(
