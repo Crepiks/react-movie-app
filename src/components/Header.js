@@ -10,7 +10,6 @@ class Header extends Component {
     }
 
     _onUserInput = (e) => {
-        console.log(e.target.value);
         this.setState({
             ...this.state,
             searchQuery: e.target.value

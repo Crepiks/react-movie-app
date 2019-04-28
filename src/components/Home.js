@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 
 import './Home.css';
 
+// Image that is displayed when there is no poster
+import noPosterImage from '../image/noPoster.jpg';
+ 
 import Header from './Header';
 import MovieCard from './MovieCard';
 import Pagination from './Pagination';
@@ -89,7 +92,11 @@ class Home extends Component {
         let moviesList = this.state.moviesList;
         if (moviesList.length > 0) {
             return moviesList.map((movie) => {
-                movie.poster = this.baseImageURL + 'w300' + movie.poster_path;
+                if (movie.poster_path === null) {
+                    movie.poster = noPosterImage;
+                } else {
+                    movie.poster = this.baseImageURL + 'w300' + movie.poster_path;
+                }
                 return <MovieCard movie={movie} key={movie.id} />
             });
         } else {
